@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
 import {
   SafeAreaView,
   View,
@@ -12,10 +13,16 @@ import InputField from './components/InputField';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomButton from './components/CustomButton';
+import Register_screen from './Register_screen';
 
 
 
 const Login_screen = () => {
+    const navigation = useNavigation();
+    const handleSignUpPress = () => {
+        navigation.navigate('Register_screen');
+      };
+    
     return (
         <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
           <View style={{paddingHorizontal: 25}}>
@@ -84,7 +91,7 @@ const Login_screen = () => {
                 }}>
                 Don't have an account?
               </Text>
-              <TouchableOpacity onPress={() => {}}>
+              <TouchableOpacity onPress={handleSignUpPress}>
                 <Text
                   style={{
                     fontFamily: 'Roboto-Regular',
