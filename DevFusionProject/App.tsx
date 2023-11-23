@@ -33,7 +33,7 @@ export default function App() {
             return (
               <Image
                 source={iconName}
-                style={{ height: 30, width: 30 }}
+                style={{ height: 20, width: 20 }}
               />
             );
           },
