@@ -26,7 +26,7 @@ function Login_screen({navigation,route}:LoginProps){
   const [userId,setUserId] = useState(null)
   const handleLogin = async () => {
       try {
-        const response = await axios.post('https://59d3-106-194-116-63.ngrok-free.app/api/v1/gettoken', {
+        const response = await axios.post('https://4742-2401-4900-8094-22d1-4b1-d9b3-bed5-ddc4.ngrok-free.app/api/v1/gettoken', {
             otp: otp,
             user: userId,
           })
@@ -42,7 +42,7 @@ function Login_screen({navigation,route}:LoginProps){
   }
   const handleGetOTP = async () => {
     try {
-      const response = await axios.post('https://59d3-106-194-116-63.ngrok-free.app/api/v1/signin', {
+      const response = await axios.post('https://4742-2401-4900-8094-22d1-4b1-d9b3-bed5-ddc4.ngrok-free.app/api/v1/signin', {
         phone: phoneNumber,
       });
 
