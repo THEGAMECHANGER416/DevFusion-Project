@@ -73,7 +73,7 @@ const Login_screen = () => {
               fieldButtonFunction={() => {}}
             />
             
-            <CustomButton label={"Login"} onPress={() => {}} />
+            <CustomButton label={"Login"} onPress={() => {navigation.navigate('Home')}} />
     
          
             <View
