@@ -1,47 +1,71 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet, Linking } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; // Assuming MaterialIcons are installed and imported properly
-import Comment from './Comment';
 
 const Card = ({ title, description, imageUrl, postedBy, locationUrl }) => {
   const [upvotes, setUpvotes] = React.useState(0);
   const [downvotes, setDownvotes] = React.useState(0);
   const [upvoted, setUpvoted] = React.useState(false);
   const [downvoted, setDownvoted] = React.useState(false);
+
+  const handleVote = (type) => {
+    if (type === 'upvote') {
+      if (!upvoted) {
+        setUpvotes(upvotes + 1);
+        setUpvoted(true);
+        if (downvoted) {
+          setDownvotes(downvotes - 1);
+          setDownvoted(false);
+        }
+      } else {
+        setUpvotes(upvotes - 1);
+        setUpvoted(false);
+      }
+    } else {
+      if (!downvoted) {
+        setDownvotes(downvotes + 1);
+        setDownvoted(true);
+        if (upvoted) {
+          setUpvotes(upvotes - 1);
+          setUpvoted(false);
+        }
+      } else {
+        setDownvotes(downvotes - 1);
+        setDownvoted(false);
+      }
+    }
+  };
+
   return (
     <View style={styles.card}>
-      {/* <View style={styles.header}> */}
-      {/* </View> */}
-      <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'baseline'}}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline' }}>
         <Text style={styles.title}>{title}</Text>
-        <Text style={[styles.text,{fontFamily:'Poppins-Light'}]}>{postedBy}</Text>
+        <Text style={[styles.text, { fontFamily: 'Poppins-Light' }]}>{postedBy}</Text>
       </View>
-      {/* <Text style={[styles.text,{fontFamily:'Poppins-Light'}]}>{postedBy}</Text> */}
       <Text style={styles.description}>{description}</Text>
-      <TouchableOpacity onPress={() => Linking.openURL(locationUrl)} style={{flexDirection:'row'}}>
-        <Image source={require('../../static/images/maps.png')} style={{height:20,width:20,marginRight:5,marginBottom:10}}/>
-        <Text style={[styles.text,{color:'#3550ca',fontFamily:'Poppins-Medium'}]}>Location</Text>
+      <TouchableOpacity onPress={() => Linking.openURL(locationUrl)} style={{ flexDirection: 'row' }}>
+        <Image source={require('../../static/images/maps.png')} style={{ height: 20, width: 20, marginRight: 5, marginBottom: 10 }} />
+        <Text style={[styles.text, { color: '#3550ca', fontFamily: 'Poppins-Medium' }]}>Location</Text>
       </TouchableOpacity>
       <Image source={{ uri: imageUrl }} style={styles.image} />
-      <View style={{padding:6}}></View>
+      <View style={{ padding: 6 }}></View>
       <View style={styles.votes}>
-          <View style={{flexDirection:'row',alignItems:'center'}}>
-            <TouchableOpacity onPress={() => {downvoted?setDownvoted(false):setUpvoted(!upvoted)}}>
-              {upvoted?<Image style={{height:25,width:25,marginRight:5}} source={require('../../static/images/thumb_up.jpg')}/>:<Image style={{height:25,width:25,marginRight:5}} source={require('../../static/images/thumb_up_off_alt.jpg')}/>}
-            </TouchableOpacity>
-            <Text style={[styles.text,{fontSize:20}]}>0</Text>
-          </View>
-          <View style={{flexDirection:'row',alignItems:'center'}}>
-            <TouchableOpacity onPress={() => {upvoted?setUpvoted(false):setDownvoted(!downvoted);}}>
-            {downvoted?<Image style={{height:25,width:25,marginRight:5}} source={require('../../static/images/thumb_down.jpg')}/>:<Image style={{height:25,width:25,marginRight:5}} source={require('../../static/images/thumb_down_off_alt.jpg')}/>}
-            </TouchableOpacity>
-            <Text style={[styles.text,{fontSize:20}]}>0</Text>
-          </View>
-          <View style={{flexDirection:'row',alignItems:'center',marginLeft:'60%'}}>
-            <MaterialIcons name="comment" size={25} color="#333" />
-            {/* <Text style={[styles.text,{fontSize:20}]}>0</Text> */}
-          </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => { handleVote();downvoted ? setDownvoted(false) : setUpvoted(!upvoted) }}>
+            {upvoted ? <Image style={{ height: 25, width: 25, marginRight: 5 }} source={require('../../static/images/thumb_up.jpg')} /> : <Image style={{ height: 25, width: 25, marginRight: 5 }} source={require('../../static/images/thumb_up_off_alt.jpg')} />}
+          </TouchableOpacity>
+          <Text style={[styles.text, { fontSize: 20 }]}>{upvotes}</Text>
         </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => {handleVote(); upvoted ? setUpvoted(false) : setDownvoted(!downvoted); }}>
+            {downvoted ? <Image style={{ height: 25, width: 25, marginRight: 5 }} source={require('../../static/images/thumb_down.jpg')} /> : <Image style={{ height: 25, width: 25, marginRight: 5 }} source={require('../../static/images/thumb_down_off_alt.jpg')} />}
+          </TouchableOpacity>
+          <Text style={[styles.text, { fontSize: 20 }]}>{downvotes}</Text>
+        </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: '60%' }}>
+          <MaterialIcons name="comment" size={25} color="#333" />
+        </View>
+      </View>
     </View>
   );
 };
@@ -54,13 +78,6 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     margin: 10,
     padding: 15,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 0,
-    marginLeft: 2,
   },
   title: {
     fontSize: 20,
@@ -80,14 +97,13 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 16,
     color: '#333',
-    marginBottom:10,
-    fontFamily:'Poppins-Regular',
-
+    marginBottom: 10,
+    fontFamily: 'Poppins-Regular',
   },
   text: {
     fontSize: 16,
     color: '#333',
-    fontFamily:'Poppins-Medium',
+    fontFamily: 'Poppins-Medium',
     marginRight: 10,
     marginLeft: 0,
   }

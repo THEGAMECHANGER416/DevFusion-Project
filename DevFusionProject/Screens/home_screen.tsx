@@ -43,8 +43,8 @@ function Home({navigation,route}:LoginProps) {
         Hot issues today
       </Text>
       {cardData.map((card) => (
-        <TouchableOpacity key={card.id} onPress={() => navigation.navigate('Details', {card})}>
         <View key={card.id} style={styles.cardContainer}>
+           <TouchableOpacity key={card.id} onPress={() => navigation.navigate('Details', {card})}>
           <Card
             title={card.title}
             description={card.description}
@@ -52,8 +52,8 @@ function Home({navigation,route}:LoginProps) {
             postedBy={card.postedBy}
             locationUrl={card.locationUrl}
           />
+          </TouchableOpacity>
         </View>
-        </TouchableOpacity>
       ))}
     </ScrollView>
     </ImageBackground>

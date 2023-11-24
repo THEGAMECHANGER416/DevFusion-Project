@@ -5,7 +5,12 @@ import axios from 'axios';
 import SessionStorage from 'react-native-session-storage';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const CreateScreen = () => {
+interface CreateProps {
+  navigation: any;
+  route: any;
+}
+
+function CreateScreen ({navigation,route}:CreateProps){
   const [image, setImage] = React.useState('https://i.imgur.com/pPmdmDV.png');
   const [title, setTitle] = React.useState('');
   const [description, setDescription] = React.useState('');
@@ -47,6 +52,7 @@ const CreateScreen = () => {
         },
       });
       console.log('Post successful:', response.data);
+      navigation.navigate('HomeTab');
     } catch (error) {
       console.error('Error posting to server:', error);
     }
