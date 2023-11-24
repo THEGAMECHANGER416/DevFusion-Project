@@ -3,8 +3,8 @@ import {Text, View} from 'react-native';
 
 const Startup = () => {
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text style={{color:'red'}}>Startup Screen</Text>
+    <View>
+      <Text style={{color:"red"}}>hi this is profile</Text>
     </View>
   );
 };

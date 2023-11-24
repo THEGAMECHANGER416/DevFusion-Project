@@ -15,16 +15,16 @@ const Card = ({ title, description, imageUrl, postedBy }) => {
       <Text style={[styles.text,{fontFamily:'Poppins-Light'}]}>{postedBy}</Text>
       <Text style={styles.description}>{description}</Text>
       <Image source={{ uri: imageUrl }} style={styles.image} />
-      <View style={styles.votes}>
+      {/* <View style={styles.votes}>
           <TouchableOpacity onPress={() => {downvoted?setDownvoted(false):setUpvoted(!upvoted)}}>
-            {upvoted?<Image source={require('.../static/images/thumb-up.jpg')}/>:<Image source={require('.../static/images/thumb-up-off-alt.jpg')}/>}
+            {upvoted?<Image source={require('https://static.vecteezy.com/system/resources/thumbnails/007/737/987/small/thumbs-up-symbol-icon-illustration-free-vector.jpg')}/>:<Image source={require('https://static.vecteezy.com/system/resources/thumbnails/007/737/987/small/thumbs-up-symbol-icon-illustration-free-vector.jpg')}/>}
           </TouchableOpacity>
           <Text style={styles.text}>0</Text>
           <TouchableOpacity onPress={() => {upvoted?setUpvoted(false):setDownvoted(!downvoted);}}>
-          {downvoted?<Image source={require('.../static/images/thumb-down.jpg')}/>:<Image source={require('.../static/images/thumb-down-off-alt.jpg')}/>}
+          {downvoted?<Image source={require('https://static.vecteezy.com/system/resources/thumbnails/007/737/987/small/thumbs-up-symbol-icon-illustration-free-vector.jpg')}/>:<Image source={require('https://static.vecteezy.com/system/resources/thumbnails/007/737/987/small/thumbs-up-symbol-icon-illustration-free-vector.jpg')}/>}
           </TouchableOpacity>
           <Text style={styles.text}>0</Text>
-        </View>
+        </View> */}
     </View>
   );
 };
