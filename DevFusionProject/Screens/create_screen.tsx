@@ -79,6 +79,8 @@ const CreateScreen = () => {
           </View>
           <View style={{ flexDirection: 'row', marginTop: 10 }}>
             <TextInput
+              value={title}
+              onChangeText={(title)=>setTitle(title)}
               style={{
                 backgroundColor: '#dfdfdfde',
                 borderRadius: 20,
@@ -86,6 +88,7 @@ const CreateScreen = () => {
                 paddingLeft: 20,
                 fontFamily: 'Poppins',
                 color: '#000000',
+
               }}
             />
           </View>
@@ -95,6 +98,8 @@ const CreateScreen = () => {
   </View>
   <View style={{ flexDirection: 'row', marginTop: 10 }}>
     <TextInput
+    value={locationURL}
+    onChangeText={(locationURL)=>setLocationURL(locationURL)}
       style={{
         backgroundColor: '#dfdfdfde',
         borderRadius: 20,
@@ -112,6 +117,8 @@ const CreateScreen = () => {
           </View>
           <View style={{ flexDirection: 'row', marginTop: 10 }}>
             <TextInput
+            value={description}
+            onChangeText={(description)=>setDescription(description)}
               style={{
                 backgroundColor: '#dfdfdfde',
                 borderRadius: 20,
