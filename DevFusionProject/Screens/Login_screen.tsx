@@ -33,7 +33,7 @@ function Login_screen({navigation,route}:LoginProps){
           console.log(response.data)
           if (response.data.token != ""){
             SessionStorage.setItem("token",response.data.token)
-            navigation.navigate("Home")
+            navigation.navigate("thankyou")
           }
         }
        catch (error) {
@@ -123,7 +123,9 @@ function Login_screen({navigation,route}:LoginProps){
             }}>
             Need anything? touch this
           </Text>
-          <TouchableOpacity onPress={()=>{}}>
+          <TouchableOpacity onPress={()=>{
+            
+          }}>
             <Text
               style={{
                 fontFamily: 'Roboto-Regular',
