@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import Card from './components/Card';
+import { Text } from 'react-native';
 
 const Home = () => {
   const cardData = [
@@ -30,6 +31,9 @@ const Home = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <Text style={{fontSize: 30, marginBottom: 20, color:"#000000",fontFamily:'Poppins-Bold', alignSelf:'flex-start',marginLeft:20, marginTop:10}}>
+        Hot issues today
+      </Text>
       {cardData.map((card) => (
         <View key={card.id} style={styles.cardContainer}>
           <Card
