@@ -11,6 +11,7 @@ import LoginScreen from './Screens/Login_screen'; // Updated component name to f
 import Lets from './Screens/Lets';
 import CreateScreen from './Screens/create_screen';
 import ProfileScreen from './Screens/profile_screen';
+import CopyProfileScreen from './Screens/copycreate_screen';
 
 
 const Tab = createBottomTabNavigator();
@@ -75,6 +76,7 @@ function AppContent() {
         <Stack.Screen name="Lets" component={Lets} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Home" component={AppHome} />
+        <Stack.Screen name='thankyou' component={CopyProfileScreen}/>
       </Stack.Navigator>
   );
 }

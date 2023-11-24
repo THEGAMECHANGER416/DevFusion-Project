@@ -51,13 +51,9 @@ const ProfileScreen = () => {
                     borderColor: '#666',
                     borderWidth: 1, width: '80%'
                 }}>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Phone Number"
-                        value={phoneNumber}
-                        onChangeText={(phoneNumber) => setPhoneNumber(phoneNumber)}
-                        placeholderTextColor={"#666"}
-                    />
+                    <Text style={styles.input}>
+                    {}
+                   </Text>
                 </View>
                 <View style={{
                     borderRadius: 20, marginTop: 20, alignItems: 'center', 'justifyContent': 'center', overflow: 'hidden',

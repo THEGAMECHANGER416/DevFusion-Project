@@ -33,7 +33,7 @@ function Login_screen({navigation,route}:LoginProps){
           console.log(response.data)
           if (response.data.token != ""){
             SessionStorage.setItem("token",response.data.token)
-            navigation.navigate("Home")
+            navigation.navigate("thankyou")
           }
         }
        catch (error) {
