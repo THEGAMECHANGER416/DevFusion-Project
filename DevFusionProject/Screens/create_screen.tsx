@@ -38,7 +38,7 @@ const CreateScreen = () => {
       formData.append("title", title);
       formData.append("description", description);
       formData.append("locURL", locationURL);
-      formData.append("userId", 2);
+      formData.append("userId", SessionStorage.getItem("userId"));
       const response = await axios.post('https://4742-2401-4900-8094-22d1-4b1-d9b3-bed5-ddc4.ngrok-free.app/api/v1/post',formData,
       {
         headers: {
