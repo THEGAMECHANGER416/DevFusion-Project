@@ -1,7 +1,6 @@
 import React from 'react';
 import { ScrollView, View, StyleSheet, Text } from 'react-native';
 import Card from './components/Card';
-import { Text } from 'react-native';
 
 const Home = () => {
   const cardData = [

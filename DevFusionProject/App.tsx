@@ -6,9 +6,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeScreen from './Screens/home_screen';
-import SettingsScreen from './Screens/startup_screen';
 import LoginScreen from './Screens/Login_screen'; // Updated component name to follow conventions
 import Lets from './Screens/Lets';
+import CreateScreen from './Screens/create_screen';
+import ProfileScreen from './Screens/profile_screen';
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -25,11 +27,16 @@ function AppHome() {
               iconName = focused
                 ? require('./static/images/home.png')
                 : require('./static/images/home-outline.png');
-            } else if (route.name === 'MapsTab') {
+            } else if (route.name === 'CreateTab') {
               iconName = focused
-                ? require('./static/images/maps.png')
-                : require('./static/images/maps-outline.png');
+                ? require('./static/images/add-fill.png')
+                : require('./static/images/add-outline.png');
             }            
+            else if(route.name === 'ProfileTab'){
+              iconName = focused  
+              ? require('./static/images/profile.png')
+                : require('./static/images/profile-outline.png');
+            }
             return (
               <Image source={iconName} style={{ height: 20, width: 20 }}/>
             );
@@ -45,7 +52,8 @@ function AppHome() {
         })}
       >
         <Tab.Screen name="HomeTab" component={HomeScreen} options={{tabBarLabel:'Home'}} />
-        <Tab.Screen name="MapsTab" component={SettingsScreen} options={{tabBarLabel:'Maps'}}/>
+        <Tab.Screen name="CreateTab" component={CreateScreen} options={{tabBarLabel:'Post'}}/>
+        <Tab.Screen name="ProfileTab" component={ProfileScreen} options={{tabBarLabel:'Profile'}}/>
       </Tab.Navigator>
     // </NavigationContainer>
   );
