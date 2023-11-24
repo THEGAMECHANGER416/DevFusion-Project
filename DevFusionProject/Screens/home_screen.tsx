@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View, StyleSheet, Text } from 'react-native';
+import { ScrollView, View, StyleSheet, Text, ImageBackground } from 'react-native';
 import Card from './components/Card';
 
 const Home = () => {
@@ -29,6 +29,7 @@ const Home = () => {
   ];
 
   return (
+    <ImageBackground style={{"backgroundColor":"#ffffff01"}} source={require('../static/images/backgroundopacity.png')}>
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={{fontSize: 30, marginBottom: 20, color:"#000000",fontFamily:'Poppins-Bold', alignSelf:'flex-start',marginLeft:20, marginTop:10}}>
         Hot issues today
@@ -44,19 +45,20 @@ const Home = () => {
         </View>
       ))}
     </ScrollView>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f4f6fc',
+    // backgroundColor: '#f4f6fc',
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 20,
   },
   cardContainer: {
-    marginBottom: 20,
+    marginBottom: 5,
   },
 });
 
