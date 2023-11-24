@@ -71,7 +71,7 @@ function AppContent() {
     }
   },[navigation]);
   return(
-      <Stack.Navigator screenOptions={{headerShown:false}} initialRouteName={"Home"}>
+      <Stack.Navigator screenOptions={{headerShown:false}}>
         <Stack.Screen name="Lets" component={Lets} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Home" component={AppHome} />
