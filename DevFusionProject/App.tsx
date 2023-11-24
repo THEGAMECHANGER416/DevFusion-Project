@@ -2,8 +2,9 @@ import 'react-native-gesture-handler';
 import * as React from 'react';
 import { Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import SessionStorage from 'react-native-session-storage';
 
 import HomeScreen from './Screens/home_screen';
 import LoginScreen from './Screens/Login_screen'; // Updated component name to follow conventions
@@ -59,14 +60,28 @@ function AppHome() {
   );
 }
 
-export default function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown:false}}>
+
+function AppContent() {
+  const navigation = useNavigation();
+  let initialRouteName = "Lets";
+  React.useEffect(() => {
+    if(SessionStorage.getItem("token")){
+      console.log("token found");
+      initialRouteName = "Home";
+    }
+  },[navigation]);
+  return(
+      <Stack.Navigator screenOptions={{headerShown:false}} initialRouteName={"Home"}>
         <Stack.Screen name="Lets" component={Lets} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Home" component={AppHome} />
       </Stack.Navigator>
+  );
+}
+export default function App() {
+  return (
+    <NavigationContainer>
+      <AppContent/>
     </NavigationContainer>
   );
 }
