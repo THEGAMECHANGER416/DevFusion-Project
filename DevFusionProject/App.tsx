@@ -1,56 +1,63 @@
 import * as React from 'react';
-import { Image, Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MapsScreen from './Screens/maps_screen';
-
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Home!</Text>
-    </View>
-  );
-}
-
+import { NavigationContainer, StackRouter } from '@react-navigation/native';
+import HomeScreen from './Screens/home_screen';
+import SettingsScreen from './Screens/startup_screen';
+import LoginScreen from './Screens/Login_screen'; // Updated component name to follow conventions
+import Lets from './Screens/Lets';
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator screenOptions={({ route }) => ({
-          tabBarIcon: ( ({focused, color, size}) => {
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
             let iconName;
-
+            
             if (route.name === 'Home') {
-              if (! focused) {
-                return <Image source={require('./static/images/home-outline.png')} style={{height:30, width:30}}/>;
-              }
-              else {
-                return <Image source={require('./static/images/home.png')} style={{height:30, width:30}}/>;
-              }
+              iconName = focused
+                ? require('./static/images/home.png')
+                : require('./static/images/home-outline.png');
             } else if (route.name === 'Maps') {
-              if (! focused) {
-                return <Image source={require('./static/images/map-outline.png')} style={{height:30, width:30}}/>;
-              }
-              else {
-                return <Image source={require('./static/images/map.png')} style={{height:30, width:30}}/>;
+              iconName = focused
+                ? require('./static/images/maps.png')
+                : require('./static/images/maps-outline.png');
+            } else if (route.name === 'Profile') {
+              iconName = focused
+                ? require('./static/images/profile.png')
+                : require('./static/images/profile-outline.png');
             }
+            else if (route.name === 'Lets') {
+              iconName = focused
+                ? require('./static/images/profile.png')
+                : require('./static/images/profile-outline.png');
             }
-          }),
+            
+            return (
+              <Image
+                source={iconName}
+                style={{ height: 20, width: 20 }}
+              />
+            );
+          },
           tabBarActiveTintColor: '#000000',
           tabBarInactiveTintColor: 'gray',
           headerShown: false,
-          tabBarIconStyle: {
-            marginTop: 5
+          tabBarStyle: {
+            backgroundColor: '#ffffff',
+            height: 50,
+            paddingBottom: 5,
           },
-          tabBarLabelStyle: {
-            marginBottom: 5
-          },
-        })}>
-        <Tab.Screen name="Home" component={HomeScreen}/>
-        <Tab.Screen name="Maps" component={MapsScreen} />
+        })}
+      >
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Maps" component={SettingsScreen} />
+        <Tab.Screen name="Profile" component={LoginScreen} />
+        <Tab.Screen name="Lets" component={Lets} />
       </Tab.Navigator>
     </NavigationContainer>
   );
-} 
+}
