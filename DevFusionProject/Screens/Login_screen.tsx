@@ -1,6 +1,4 @@
-import React from 'react';
-import EncryptedStorage from 'react-native-encrypted-storage';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   View,
@@ -9,133 +7,138 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
+import SessionStorage from 'react-native-session-storage';
 
-import InputField from './components/InputField';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomButton from './components/CustomButton';
-import Register_screen from './Register_screen';
+import axios from 'axios';
 
 
-
-const Login_screen = () => {
-  async function storeUserSession() {
-    try {
-        await EncryptedStorage.setItem(
-            "user_session",
-            JSON.stringify({
-                token : "ACCESS_TOKEN",
-            })
-        );
-
-        // Congrats! You've just stored your first value!
-    } catch (error) {
-      console.error("Error storing user session:", error);
-    }
+interface LoginProps {
+  navigation: any;
+  route: any;
 }
-const retrieveUserSession = async () => {
-  try {
-    const session = await EncryptedStorage.getItem("user_session");
-    console.log("Retrieved session:", session);
 
-    if (session !== undefined) {
-      console.log("aeaaiopn undefined");
-    }
-  } catch (error) {
-    console.error("Error retrieving user session:", error);
+function Login_screen({navigation,route}:LoginProps){
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [otp, setOtp] = useState('');
+  const [userId,setUserId] = useState(null)
+  const handleLogin = async () => {
+      try {
+        const response = await axios.post('https://347f-2401-4900-8094-22d1-8061-3d9d-b160-ac09.ngrok-free.app/api/v1/gettoken', {
+            otp: otp,
+            user: userId,
+          })
+          console.log(response.data)
+          if (response.data.token != ""){
+            SessionStorage.setItem("token",response.data.token)
+            navigation.navigate("Home")
+          }
+        }
+       catch (error) {
+        console.log(error)
+      }
   }
-};
-    const navigation = useNavigation();
-    const handleSignUpPress = () => {
-       
-      };
-    
-    return (
-        <SafeAreaView style={{flex: 1, justifyContent: 'center',backgroundColor:"white"}}>
-          <View style={{paddingHorizontal: 25}}>
-            <View style={{alignItems: 'center'}}>
-              <Image
-                source={require('../static/images/hombre.gif')}
-                style={{height: 300, width: 300, marginBottom: 20}}
-              />
-            </View>
-    
+  const handleGetOTP = async () => {
+    try {
+      const response = await axios.post('https://347f-2401-4900-8094-22d1-8061-3d9d-b160-ac09.ngrok-free.app/api/v1/signin', {
+        phone: phoneNumber,
+      });
+
+      console.log('Phone Number sent successfully:', response.data);
+      setUserId(response.data.userid)
+      SessionStorage.setItem("userId",response.data.userid)
+    } catch (error) {
+      console.error('Error sending OTP:', error);
+    }
+  };
+
+
+  return (
+    <SafeAreaView style={{ flex: 1, justifyContent: 'center', backgroundColor: "white" }}>
+      <View style={{ paddingHorizontal: 25 }}>
+        <View style={{ alignItems: 'center' }}>
+          <Image
+            source={require('../static/images/hombre.gif')}
+            style={{ height: 300, width: 300, marginBottom: 20 }}
+          />
+        </View>
+
+        <Text
+          style={{
+            fontFamily: 'Poppins-Bold',
+            fontSize: 24,
+            color: '#333',
+            marginBottom: 30,
+          }}>
+          Sign into your account!
+        </Text>
+
+        <View style={{ "flexDirection": "row", alignItems: "center", borderBottomWidth: 0.5, borderBottomColor: "#666", marginBottom: 10 }}>
+          <MaterialIcons name="phone" size={20} color="#666" style={{ marginRight: 5 }} />
+          <TextInput
+            keyboardType="number-pad"
+            style={{ color: "#666", padding: 5,width:"90%" }}
+            placeholder='Enter Phone Number'
+            placeholderTextColor={"#666"}
+            value={phoneNumber}
+            onChangeText={phoneNumber => { setPhoneNumber(phoneNumber); console.log(phoneNumber) }} // Update phone number state
+          />
+        </View>
+
+        <View style={{ "flexDirection": "row", alignItems: "center", borderBottomWidth: 0.5, borderBottomColor: "#666", marginBottom: 10 }}>
+          <View style={{ "flexDirection": "row", alignItems: "center" }}>
+            <Ionicons name="key" size={20} color="#666" style={{ marginRight: 5 }} />
+            <TextInput
+              keyboardType="number-pad"
+              style={{ color: "#666", padding: 5,width:"82%"}}
+              placeholder='Enter OTP'
+              placeholderTextColor={"#666"}
+              value={otp}
+              onChangeText={otp => { setOtp(otp); console.log(otp) }} // Update phone number state
+            />
+          </View>
+          <TouchableOpacity onPress={handleGetOTP}>
+            <Text style={{ "color": "#40A2AF", fontWeight: "600" , marginLeft:-18, width:100}}>Get OTP</Text>
+          </TouchableOpacity>
+        </View>
+
+        <CustomButton label={"Login"} onPress={handleLogin} />
+
+
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 5,
+            marginBottom: 30,
+          }}>
+          <Text
+            style={{
+              fontFamily: 'Roboto-Regular',
+              fontSize: 14,
+              color: '#666',
+            }}>
+            Need anything? touch this
+          </Text>
+          <TouchableOpacity onPress={()=>{}}>
             <Text
               style={{
-                fontFamily: 'Poppins-Bold',
-                fontSize: 24,
-                color: '#333',
-                marginBottom: 30,
+                fontFamily: 'Roboto-Regular',
+                fontSize: 14,
+                color: '#40A2AF',
+                marginLeft: 5,
               }}>
-            Sign into your account!
+              Help
             </Text>
-    
-            <InputField
-              label={'Phone Number'}
-              icon={
-                <MaterialIcons
-                name="phone"
-                size={20}
-                color="#666"
-                style={{marginRight: 5}}
-              />
-              }
-              keyboardType="number-pad"
-            />
-    
-    <InputField
-              label={'One-Time-Password'}
-              icon={
-                <Ionicons
-                name="key"
-                size={20}
-                color="#666"
-                style={{marginRight: 5}}/>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </SafeAreaView>
+  );
+};
 
-              }
-              inputType="number-pad"
-              fieldButtonLabel={"Get OTP"}
-              fieldButtonFunction={() => {}}
-            />
-            
-            <CustomButton label={"Login"} onPress={() => {
-        retrieveUserSession(); 
-        navigation.navigate('Home');
-      }} />
-    
-         
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginTop: 5,
-                marginBottom: 30,
-              }}>
-              <Text
-                style={{
-                  fontFamily: 'Roboto-Regular',
-                  fontSize: 14,
-                  color: '#666',
-                }}>
-               Need anything? touch this
-              </Text>
-              <TouchableOpacity onPress={handleSignUpPress}>
-                <Text
-                  style={{
-                    fontFamily: 'Roboto-Regular',
-                    fontSize: 14,
-                    color: '#40A2AF',
-                    marginLeft: 5,
-                  }}>
-                  Help
-                </Text>
-              </TouchableOpacity>
-            </View>
-            </View>
-        </SafeAreaView>
-      );
-    };
-    
 
 export default Login_screen
