@@ -12,6 +12,7 @@ import Lets from './Screens/Lets';
 import CreateScreen from './Screens/create_screen';
 import ProfileScreen from './Screens/profile_screen';
 import CopyProfileScreen from './Screens/copycreate_screen';
+import CommentScreen from './Screens/comment_screen';
 
 
 const Tab = createBottomTabNavigator();
@@ -77,6 +78,7 @@ function AppContent() {
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Home" component={AppHome} />
         <Stack.Screen name='thankyou' component={CopyProfileScreen}/>
+        <Stack.Screen name='Details' component={CommentScreen}/>
       </Stack.Navigator>
   );
 }
