@@ -46,6 +46,7 @@ const Home = () => {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#f4f6fc',
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',

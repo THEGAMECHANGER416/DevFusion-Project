@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; // Assuming MaterialIcons are installed and imported properly
+import Comment from './Comment';
 
 const Card = ({ title, description, imageUrl, postedBy }) => {
   const [upvotes, setUpvotes] = React.useState(0);
@@ -15,15 +16,24 @@ const Card = ({ title, description, imageUrl, postedBy }) => {
       <Text style={[styles.text,{fontFamily:'Poppins-Light'}]}>{postedBy}</Text>
       <Text style={styles.description}>{description}</Text>
       <Image source={{ uri: imageUrl }} style={styles.image} />
+      <View style={{padding:6}}></View>
       <View style={styles.votes}>
-          <TouchableOpacity onPress={() => {downvoted?setDownvoted(false):setUpvoted(!upvoted)}}>
-            {upvoted?<Image style={{height:20,width:20}} source={require('../../static/images/thumb_up.jpg')}/>:<Image style={{height:20,width:20}} source={require('../../static/images/thumb_up_off_alt.jpg')}/>}
-          </TouchableOpacity>
-          <Text style={styles.text}>0</Text>
-          <TouchableOpacity onPress={() => {upvoted?setUpvoted(false):setDownvoted(!downvoted);}}>
-          {downvoted?<Image style={{height:20,width:20}} source={require('../../static/images/thumb_down.jpg')}/>:<Image style={{height:20,width:20}} source={require('../../static/images/thumb_down_off_alt.jpg')}/>}
-          </TouchableOpacity>
-          <Text style={styles.text}>0</Text>
+          <View style={{flexDirection:'row',alignItems:'center'}}>
+            <TouchableOpacity onPress={() => {downvoted?setDownvoted(false):setUpvoted(!upvoted)}}>
+              {upvoted?<Image style={{height:25,width:25,marginRight:5}} source={require('../../static/images/thumb_up.jpg')}/>:<Image style={{height:25,width:25,marginRight:5}} source={require('../../static/images/thumb_up_off_alt.jpg')}/>}
+            </TouchableOpacity>
+            <Text style={[styles.text,{fontSize:20}]}>0</Text>
+          </View>
+          <View style={{flexDirection:'row',alignItems:'center'}}>
+            <TouchableOpacity onPress={() => {upvoted?setUpvoted(false):setDownvoted(!downvoted);}}>
+            {downvoted?<Image style={{height:25,width:25,marginRight:5}} source={require('../../static/images/thumb_down.jpg')}/>:<Image style={{height:25,width:25,marginRight:5}} source={require('../../static/images/thumb_down_off_alt.jpg')}/>}
+            </TouchableOpacity>
+            <Text style={[styles.text,{fontSize:20}]}>0</Text>
+          </View>
+          <View style={{flexDirection:'row',alignItems:'center',marginLeft:'60%'}}>
+            <MaterialIcons name="comment" size={25} color="#333" />
+            {/* <Text style={[styles.text,{fontSize:20}]}>0</Text> */}
+          </View>
         </View>
     </View>
   );
@@ -33,7 +43,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
     borderRadius: 8,
-    borderWidth: 1,
+    borderWidth: 0,
     borderColor: '#ccc',
     margin: 10,
     padding: 15,
