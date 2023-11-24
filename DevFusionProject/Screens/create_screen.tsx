@@ -7,7 +7,7 @@ import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-ha
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 const CreateScreen = () => {
-  const [image, setImage] = React.useState('https://reactnative.dev/img/tiny_logo.png');
+  const [image, setImage] = React.useState('https://i.imgur.com/pPmdmDV.png');
 
   const pickImage = async () => {
     const result = await launchImageLibrary(options={mediaType:'photo'},(response) => {
