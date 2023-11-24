@@ -3,6 +3,7 @@ import { Text, View, Image, TouchableOpacity, TextInput, ScrollView } from 'reac
 import { launchImageLibrary } from 'react-native-image-picker';
 import axios from 'axios';
 import SessionStorage from 'react-native-session-storage';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const CreateScreen = () => {
   const [image, setImage] = React.useState('https://i.imgur.com/pPmdmDV.png');
@@ -19,7 +20,8 @@ const CreateScreen = () => {
       } else {
         setImage(response.assets[0].uri);
       }
-    });
+    }
+    );
   };
 
   const postToServer = async () => {
@@ -51,50 +53,98 @@ const CreateScreen = () => {
   };
 
   return (
-    <ScrollView style={{ flex: 1 }}>
-      <Text style={{ color: "#000000", fontFamily: 'Poppins-SemiBold', fontSize: 28, marginTop: 30, alignSelf: 'center' }}>Create a Post</Text>
-      <View style={{ flexDirection: 'row', marginTop: 20, marginLeft: 20 }}>
-        <TouchableOpacity title="Upload Photo" onPress={() => pickImage()}>
-          <Image source={{ uri: image }} style={{ height: 250, width: 345, borderRadius: 20 }} />
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <Text
+          style={{
+            color: '#000000',
+            fontFamily: 'Poppins-SemiBold',
+            fontSize: 22,
+            marginTop: 30,
+            alignSelf: 'center',
+          }}
+        >
+          Create a Post
+        </Text>
+        <View style={{ flexDirection: 'row', marginTop: 20, marginHorizontal: '5%' }}>
+        <TouchableOpacity onPress={()=>pickImage()}>
+          <Image source={{uri:image}} style={{width:'100%',aspectRatio:1.3,borderRadius:20}}/>
         </TouchableOpacity>
-      </View>
-      <View style={{ flexDirection: 'row', marginTop: 20, marginLeft: 20 }}>
-        <Text style={{ color: "#000000", fontFamily: 'Poppins-Medium', fontSize: 20 }}>Title</Text>
-      </View>
-      <View style={{ flexDirection: 'row', marginTop: 0, marginLeft: 0 }}>
-        <TextInput
-          style={{ marginLeft: 20, backgroundColor: "#dfdfdfde", borderRadius: 20, width: '90%', paddingLeft: 20, fontFamily: 'Poppins', color: '#000000' }}
-          value={title}
-          onChangeText={(title) => setTitle(title)}
-        />
-      </View>
-      <View style={{ flexDirection: 'row', marginTop: 20, marginLeft: 20 }}>
-        <Text style={{ color: "#000000", fontFamily: 'Poppins-Medium', fontSize: 20 }}>Description</Text>
-      </View>
-      <View style={{ flexDirection: 'row', marginTop: 0, marginLeft: 0 }}>
-        <TextInput
-          style={{ marginLeft: 20, backgroundColor: "#dfdfdfde", borderRadius: 20, width: '90%', fontFamily: 'Poppins', color: '#000000', paddingLeft: 20 }}
-          value={description}
-          onChangeText={(description) => setDescription(description)}
-        />
-      </View>
-      <View style={{ flexDirection: 'row', marginTop: 20, marginLeft: 20 }}>
-        <Text style={{ color: "#000000", fontFamily: 'Poppins-Medium', fontSize: 20 }}>Location URL</Text>
-      </View>
-      <View style={{ flexDirection: 'row', marginTop: 0, marginLeft: 0 }}>
-        <TextInput
-          style={{ marginLeft: 20, backgroundColor: "#dfdfdfde", borderRadius: 20, width: '90%', paddingLeft: 20, fontFamily: 'Poppins', color: '#000000' }}
-          value={locationURL}
-          onChangeText={(locationURL) => setLocationURL(locationURL)}
-        />
-      </View>
-      <TouchableOpacity
-        style={{ marginTop: 20, marginLeft: 20, backgroundColor: '#000000', borderRadius: 20, width: '90%', height: 50, alignItems: 'center', justifyContent: 'center' }}
-        onPress={() => postToServer()}
-      >
-        <Text style={{ color: '#ffffff', fontFamily: 'Poppins', fontSize: 20 }}>Post</Text>
-      </TouchableOpacity>
-    </ScrollView>
+        </View>
+        <View style={{ alignSelf: 'center', marginHorizontal: '5%' }}>
+          <View style={{ flexDirection: 'row', marginTop: 20 }}>
+            <Text style={{ color: '#000000', fontFamily: 'Poppins-Medium', fontSize: 18 }}>
+              Title
+            </Text>
+          </View>
+          <View style={{ flexDirection: 'row', marginTop: 10 }}>
+            <TextInput
+              style={{
+                backgroundColor: '#dfdfdfde',
+                borderRadius: 20,
+                width: '100%',
+                paddingLeft: 20,
+                fontFamily: 'Poppins',
+                color: '#000000',
+              }}
+            />
+          </View>
+           {/* Location URL */}
+  <View style={{ flexDirection: 'row', marginTop: 20 }}>
+    <Text style={{ color: '#000000', fontFamily: 'Poppins-Medium', fontSize: 18 }}>Location URL</Text>
+  </View>
+  <View style={{ flexDirection: 'row', marginTop: 10 }}>
+    <TextInput
+      style={{
+        backgroundColor: '#dfdfdfde',
+        borderRadius: 20,
+        width: '100%',
+        paddingLeft: 20,
+        fontFamily: 'Poppins',
+        color: '#000000',
+      }}
+    />
+  </View>
+          <View style={{ flexDirection: 'row', marginTop: 20 }}>
+            <Text style={{ color: '#000000', fontFamily: 'Poppins-Medium', fontSize: 18 }}>
+              Description
+            </Text>
+          </View>
+          <View style={{ flexDirection: 'row', marginTop: 10 }}>
+            <TextInput
+              style={{
+                backgroundColor: '#dfdfdfde',
+                borderRadius: 20,
+                width: '100%',
+                fontFamily: 'Poppins',
+                color: '#000000',
+                paddingLeft: 20,
+                textAlignVertical: 'top',
+                height: 100, // Adjust the height for multiline input
+              }}
+              multiline
+            />
+          </View>
+          {/* ...Other fields */}
+          
+        <View style={{flex:1,alignItems:'center',marginBottom:30}}>
+        <TouchableOpacity
+            style={{
+              marginTop: 20,
+              backgroundColor: '#000000',
+              borderRadius: 20,
+              width: '80%',
+              height: 50,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          onPress={()=>postToServer()}>
+            <Text style={{ color: '#ffffff', fontFamily: 'Poppins', fontSize: 18 }}>Post</Text>
+          </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
