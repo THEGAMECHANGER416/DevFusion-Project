@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ImageBackground, TextInput, Image, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { launchImageLibrary } from 'react-native-image-picker';
+import axios from 'axios';
+import SessionStorage from 'react-native-session-storage';
 
 interface LoginProps {
     navigation: any;
@@ -10,9 +12,10 @@ interface LoginProps {
   function CopyProfileScreen({navigation,route}:LoginProps){
     const [image, setImage] = React.useState('https://i.imgur.com/EPln8Wy.gif');
     const [name, setName] = useState('');
+    const [userPhoneNumber,setPhoneNumber]=useState(null)
     const [about, setAbout] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
     const [email, setEmail] = useState('');
+    
     const pickImage = async () => {
         const result = await launchImageLibrary({ mediaType: 'photo' }, (response) => {
           if (response.didCancel) {
@@ -25,7 +28,74 @@ interface LoginProps {
         }
         );
       };
+    React.useEffect(() => {
+        const fetchPhoneNumber = async () => {
+          try {
+            const Uid = SessionStorage.getItem('userId');
+            const token = SessionStorage.getItem('token');
+    
+            const response = await axios.get(`https://4742-2401-4900-8094-22d1-4b1-d9b3-bed5-ddc4.ngrok-free.app/api/v1/user/${Uid}`, {
+              headers: {
+                Authorization: `token ${token}`,
+              },
+            });
+            setPhoneNumber(response.data.results[0].phone);
+            console.log(userPhoneNumber)
+          } catch (error) {
+            console.error('Error fetching phone number:', error);
+          }
+        };
+    
+        fetchPhoneNumber(); // Call the function to fetch phone number on component mount
+      }, []);
+    
+    console.log()
+    
+      const updateProfile = async () => {
+            const Uid = SessionStorage.getItem('userId')
+            const token = SessionStorage.getItem('token')
+            console.log(Uid)
+            console.log(token)
+            const formData = new FormData();
+            formData.append("profile_img", {
+                uri: image,
+                type: 'image/jpeg', // Change the type based on the image type you are using
+                name: 'photo.jpg', // Change the name as needed
+                }
+            );
+            formData.append('name', name);
+            formData.append('email', email);
+            formData.append('about', about);
 
+            const requestOptions = {
+            method: 'PATCH',
+            headers: {
+                'Authorization': 'token ' + token,
+                'Content-Type': 'multipart/form-data', // Ensure this header is set for form data with files
+            },
+            body: formData,
+            };
+
+            fetch(`https://4742-2401-4900-8094-22d1-4b1-d9b3-bed5-ddc4.ngrok-free.app/api/v1/user/${Uid}`, requestOptions)
+            .then(response => {
+                if (!response.ok) {
+                throw new Error('Network response was not ok');
+                }
+                navigation.navigate("Home");
+                return response.json();
+            })
+            .then(data => {
+                console.log('PATCH request successful:', data);
+                // Handle the response data as needed
+            })
+            .catch(error => {
+                console.error('There was a problem with the PATCH request:', error);
+            });
+        
+    }
+        
+      
+      
     return (
         <ScrollView style={{ flex: 1 }}>
                <View style={styles.container}>
@@ -67,10 +137,10 @@ interface LoginProps {
                 <View style={{
                     borderRadius: 20, marginTop: 20, alignItems: 'center', 'justifyContent': 'center', overflow: 'hidden',
                     borderColor: '#666',
-                    borderWidth: 1, width: '80%'
+                    borderWidth: 1, width: '80%',height:50,
                 }}>
-                   <Text style={styles.input}>
-                    {}
+                   <Text style={[styles.input,{color:'black'}]}>
+                    {userPhoneNumber}
                    </Text>
                 </View>
                 <View style={{
@@ -88,21 +158,17 @@ interface LoginProps {
                         placeholderTextColor="#666"
                     />
                 </View>
-                <TouchableOpacity onPress={()=>{ navigation.navigate("Home")}} style={{  backgroundColor:'black',borderRadius: 25, marginTop: 20,paddingVertical:7, alignItems: 'center', 'justifyContent': 'center', overflow: 'hidden',
+                <TouchableOpacity onPress={()=>{updateProfile()}} style={{  backgroundColor:'black',borderRadius: 25, marginTop: 20,paddingVertical:7, alignItems: 'center', 'justifyContent': 'center', overflow: 'hidden',
                     borderColor: '#666',
                     borderWidth: 1, width: '50%'}}>
                         <Text style={{color:'white',fontFamily:"Poppins-Bold",fontSize:18}}>Save</Text>
 
                 </TouchableOpacity>
-
-                {/* Other elements */}
-                {/* ... */}
             </View>
         </ScrollView>
     );
 };
 
-// Same styles as in the ProfileScreen component
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -139,7 +205,7 @@ const styles = StyleSheet.create({
         height: 80, 
         textAlignVertical: 'top', 
         fontFamily:'Poppins-Bold',
-        color:'black'
+        color:'#666'
     },
 });
 
