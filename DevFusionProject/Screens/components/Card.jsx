@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet, Linking } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; // Assuming MaterialIcons are installed and imported properly
 import Comment from './Comment';
 
-const Card = ({ title, description, imageUrl, postedBy }) => {
+const Card = ({ title, description, imageUrl, postedBy, locationUrl }) => {
   const [upvotes, setUpvotes] = React.useState(0);
   const [downvotes, setDownvotes] = React.useState(0);
   const [upvoted, setUpvoted] = React.useState(false);
@@ -11,10 +11,17 @@ const Card = ({ title, description, imageUrl, postedBy }) => {
   return (
     <View style={styles.card}>
       {/* <View style={styles.header}> */}
-        <Text style={styles.title}>{title}</Text>
       {/* </View> */}
-      <Text style={[styles.text,{fontFamily:'Poppins-Light'}]}>{postedBy}</Text>
+      <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'baseline'}}>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={[styles.text,{fontFamily:'Poppins-Light'}]}>{postedBy}</Text>
+      </View>
+      {/* <Text style={[styles.text,{fontFamily:'Poppins-Light'}]}>{postedBy}</Text> */}
       <Text style={styles.description}>{description}</Text>
+      <TouchableOpacity onPress={() => Linking.openURL(locationUrl)} style={{flexDirection:'row'}}>
+        <Image source={require('../../static/images/maps.png')} style={{height:20,width:20,marginRight:5,marginBottom:10}}/>
+        <Text style={[styles.text,{color:'#3550ca',fontFamily:'Poppins-Medium'}]}>Location</Text>
+      </TouchableOpacity>
       <Image source={{ uri: imageUrl }} style={styles.image} />
       <View style={{padding:6}}></View>
       <View style={styles.votes}>
@@ -75,6 +82,7 @@ const styles = StyleSheet.create({
     color: '#333',
     marginBottom:10,
     fontFamily:'Poppins-Regular',
+
   },
   text: {
     fontSize: 16,
