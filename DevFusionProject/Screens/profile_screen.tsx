@@ -110,7 +110,9 @@ interface LoginProps {
       
       
     return (
+        
         <ScrollView style={{ flex: 1 }}>
+            <ImageBackground style={{ backgroundColor: '#ffffff01' }} source={require('../static/images/backgroundopacity.png')}>
                <View style={styles.container}>
                 <View style={{ marginTop: 40 }}>
                     <Text style={{ "color": "#000", fontWeight: "600", fontSize: 22, fontFamily: 'Poppins-Bold' }}>Profile</Text>
@@ -178,7 +180,9 @@ interface LoginProps {
 
                 </TouchableOpacity>
             </View>
+            </ImageBackground>
         </ScrollView>
+        
     );
 };
 
