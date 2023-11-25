@@ -1,40 +1,51 @@
-import React from 'react';
-import { ScrollView, View, StyleSheet, Text, ImageBackground } from 'react-native';
+import React,{useState,useEffect} from 'react';
+import { ScrollView, View,StyleSheet, Text, ImageBackground } from 'react-native';
 import Card from './components/Card';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import axios from 'axios';
+import SessionStorage from 'react-native-session-storage';
 
 interface LoginProps {
   navigation: any;
   route: any;
 }
 function Home({navigation,route}:LoginProps) {
-  const cardData = [
-    {
-      id: 1,
-      title: 'Garbage in Hari Nagar',
-      description: 'Over the past few weeks, I ve noticed an increase in the amount of garbage lining the streets and public spaces....',
-      postedBy: 'Rahul',
-      locationUrl:'https://www.google.com/maps/place/Maharaja+Surajmal+Institute+Of+Technology/@28.6206855,77.0821542,15z/data=!4m6!3m5!1s0x390d04afb8dbcfe1:0xaff19e718be2136b!8m2!3d28.6206856!4d77.0924545!16s%2Fg%2F11flbt5gbf?entry=ttu',
-      imageUrl: 'https://images.newindianexpress.com/uploads/user/imagelibrary/2022/10/29/w1200X800/garbage1_2810chn_35.jpg',
-    },
-    {
-      id: 2,
-      title: 'Vikaspuri garbage menace',
-      description: 'Over the past few weeks, I ve noticed an increase in the amount of garbage lining the streets and public spaces. It....',
-      postedBy: 'Harsh',
-      locationUrl:'geo:37.484847,-122.148386',
-      imageUrl: 'https://images.newindianexpress.com/uploads/user/imagelibrary/2022/10/29/w1200X800/garbage1_2810chn_35.jpg',
-    },
-    {
-      id: 3,
-      title: 'Tilak Nagar is wasteland',
-      description: 'Over the past few weeks, I ve noticed an increase in the amount of garbage lining the streets and public spaces....',
-      postedBy: 'Sakshi',
-      locationUrl:'tel:+123456789',
-      imageUrl: 'https://images.newindianexpress.com/uploads/user/imagelibrary/2022/10/29/w1200X800/garbage1_2810chn_35.jpg', // Replace with your image URL
-    },
-    // Add more card data as needed
-  ];
+  const [pos, setpos] = useState([]);
+  const [refreshing, setRefreshing] = useState(false)
+
+
+  useEffect(()=>{
+        let refe = refreshing
+        let newRefres = !refe
+        navigation.addListener('focus',()=>{
+            setRefreshing(newRefres)
+            
+            // if (userId != null && token != null) {
+            // }
+
+        })
+    },[])
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const token = await SessionStorage.getItem('token');
+        const response = await axios.get('https://4742-2401-4900-8094-22d1-4b1-d9b3-bed5-ddc4.ngrok-free.app/api/v1/post',
+        {
+          headers: {
+            Authorization: `token ${token}`,
+          },
+        });
+        setpos(response.data.results);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+      }
+    };
+
+    navigation.addListener('focus',()=>{
+                fetchPosts();
+            })
+  }, [navigation,route,]);
 
   return (
     <ImageBackground style={{"backgroundColor":"#ffffff01"}} source={require('../static/images/backgroundopacity.png')}>
@@ -42,15 +53,17 @@ function Home({navigation,route}:LoginProps) {
       <Text style={{fontSize: 30, marginBottom: 20, color:"#000000",fontFamily:'Poppins-Bold', alignSelf:'flex-start',marginLeft:20, marginTop:10}}>
         Hot issues today
       </Text>
-      {cardData.map((card) => (
+      {pos.map((card) => (
         <View key={card.id} style={styles.cardContainer}>
            <TouchableOpacity key={card.id} onPress={() => navigation.navigate('Details', {card})}>
           <Card
             title={card.title}
             description={card.description}
-            imageUrl={card.imageUrl}
+            imageUrl={card.image}
             postedBy={card.postedBy}
-            locationUrl={card.locationUrl}
+            locationUrl={card.locURL}
+            upvotes={card.upvotes}
+            downvotes={card.downvotes}
           />
           </TouchableOpacity>
         </View>

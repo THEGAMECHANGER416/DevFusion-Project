@@ -2,39 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet, Linking } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; // Assuming MaterialIcons are installed and imported properly
 
-const Card = ({ title, description, imageUrl, postedBy, locationUrl }) => {
-  const [upvotes, setUpvotes] = React.useState(0);
-  const [downvotes, setDownvotes] = React.useState(0);
-  const [upvoted, setUpvoted] = React.useState(false);
-  const [downvoted, setDownvoted] = React.useState(false);
-
-  const handleVote = (type) => {
-    if (type === 'upvote') {
-      if (!upvoted) {
-        setUpvotes(upvotes + 1);
-        setUpvoted(true);
-        if (downvoted) {
-          setDownvotes(downvotes - 1);
-          setDownvoted(false);
-        }
-      } else {
-        setUpvotes(upvotes - 1);
-        setUpvoted(false);
-      }
-    } else {
-      if (!downvoted) {
-        setDownvotes(downvotes + 1);
-        setDownvoted(true);
-        if (upvoted) {
-          setUpvotes(upvotes - 1);
-          setUpvoted(false);
-        }
-      } else {
-        setDownvotes(downvotes - 1);
-        setDownvoted(false);
-      }
-    }
-  };
+const Card = ({ title, description, imageUrl, postedBy, locationUrl,upvotes,downvotes,onUpvote,onDownvote }) => {
 
   return (
     <View style={styles.card}>
@@ -51,14 +19,14 @@ const Card = ({ title, description, imageUrl, postedBy, locationUrl }) => {
       <View style={{ padding: 6 }}></View>
       <View style={styles.votes}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <TouchableOpacity onPress={() => { handleVote();downvoted ? setDownvoted(false) : setUpvoted(!upvoted) }}>
-            {upvoted ? <Image style={{ height: 25, width: 25, marginRight: 5 }} source={require('../../static/images/thumb_up.jpg')} /> : <Image style={{ height: 25, width: 25, marginRight: 5 }} source={require('../../static/images/thumb_up_off_alt.jpg')} />}
+          <TouchableOpacity onPress={onUpvote}>
+            <Image style={{ height: 25, width: 25, marginRight: 5 }} source={require('../../static/images/thumb_up.jpg')} /> 
           </TouchableOpacity>
           <Text style={[styles.text, { fontSize: 20 }]}>{upvotes}</Text>
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <TouchableOpacity onPress={() => {handleVote(); upvoted ? setUpvoted(false) : setDownvoted(!downvoted); }}>
-            {downvoted ? <Image style={{ height: 25, width: 25, marginRight: 5 }} source={require('../../static/images/thumb_down.jpg')} /> : <Image style={{ height: 25, width: 25, marginRight: 5 }} source={require('../../static/images/thumb_down_off_alt.jpg')} />}
+          <TouchableOpacity onPress={onDownvote}>
+             <Image style={{ height: 25, width: 25, marginRight: 5 }} source={require('../../static/images/thumb_down.jpg')} /> 
           </TouchableOpacity>
           <Text style={[styles.text, { fontSize: 20 }]}>{downvotes}</Text>
         </View>
