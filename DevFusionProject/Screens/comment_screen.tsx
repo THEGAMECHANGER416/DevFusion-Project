@@ -17,49 +17,8 @@ function CommentScreen({ navigation, route }: CommentProps) {
   const [com, setCom] = React.useState([]);
   const [cardData, setCardData] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
-
-  React.useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const token = await SessionStorage.getItem('token');
-        const response = await axios.get(`https://4742-2401-4900-8094-22d1-4b1-d9b3-bed5-ddc4.ngrok-free.app/api/v1/comment/${route.params.card.id}`,
-          {
-            headers: {
-              Authorization: `token ${token}`,
-            },
-          });
-        console.log(response.data);
-        setCom(response.data.results);
-        console.log(com);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching comments:', error);
-      }
-    };
-
-    const fetchPost = async () => {
-        try {
-          const token = await SessionStorage.getItem('token');
-          const response = await axios.get(`https://4742-2401-4900-8094-22d1-4b1-d9b3-bed5-ddc4.ngrok-free.app/api/v1/post/${route.params.card.id}`,
-            {
-              headers: {
-                Authorization: `token ${token}`,
-              },
-            });
-          console.log(response.data);
-          setCardData(response.data);
-          console.log(cardData);
-          setLoading(false);
-        } catch (error) {
-          console.error('Error fetching comments:', error);
-        }
-      };
-  
-
-    fetchPosts();
-    fetchPost();
-  }, [route.params.card.id,route.params.card.upvotes,route.params.card.downvotes,navigation]);
-
+  const [refreshing, setRefreshing] = React.useState(false)
+    
   const handleComment = async () => {
     try {
       await axios.post(
@@ -90,6 +49,7 @@ function CommentScreen({ navigation, route }: CommentProps) {
             },
             }
         );
+        setRefreshing(true);
     }
     catch (error) {
         console.log(error);
@@ -108,11 +68,68 @@ function CommentScreen({ navigation, route }: CommentProps) {
             },
             }
         );
+        setRefreshing(true);
     }
     catch (error) {
         console.log(error);
     }
     };
+
+    React.useEffect(()=>{
+      let refe = refreshing
+      let newRefres = !refe
+      navigation.addListener('focus',()=>{
+          setRefreshing(newRefres)
+          
+          // if (userId != null && token != null) {
+          // }
+
+      })
+  },[])
+  
+
+    React.useEffect(() => {
+      const fetchPosts = async () => {
+        try {
+          const token = await SessionStorage.getItem('token');
+          const response = await axios.get(`https://4742-2401-4900-8094-22d1-4b1-d9b3-bed5-ddc4.ngrok-free.app/api/v1/comment/${route.params.card.id}`,
+            {
+              headers: {
+                Authorization: `token ${token}`,
+              },
+            });
+          console.log(response.data);
+          setCom(response.data.results);
+          console.log(com);
+          setLoading(false);
+        } catch (error) {
+          console.error('Error fetching comments:', error);
+        }
+      };
+  
+      const fetchPost = async () => {
+          try {
+            const token = await SessionStorage.getItem('token');
+            const response = await axios.get(`https://4742-2401-4900-8094-22d1-4b1-d9b3-bed5-ddc4.ngrok-free.app/api/v1/post/${route.params.card.id}`,
+              {
+                headers: {
+                  Authorization: `token ${token}`,
+                },
+              });
+            console.log(response.data);
+            setCardData(response.data);
+            console.log(cardData);
+            setLoading(false);
+          } catch (error) {
+            console.error('Error fetching comments:', error);
+          }
+        };
+    
+  
+      fetchPosts();
+      fetchPost();
+    }, [refreshing,navigation]);
+  
 
   return (
     <>
