@@ -134,7 +134,7 @@ function CommentScreen({ navigation, route }: CommentProps) {
               <View key={comment.id} style={{ flexDirection: "row", width: "90%", alignSelf: "center", marginBottom: 20, "borderBottomWidth": 1, "borderBottomColor": "#66666667" }}>
                 <View style={{ marginLeft: 20 }}>
                   <Text style={{ fontSize: 15, marginBottom: 5, color: "#000000", fontFamily: 'Poppins-Bold' }}>
-                    {'Archit'}
+                    {'Anonymous User'}
                   </Text>
                   <Text style={{ fontSize: 15, marginBottom: 5, color: "#000000", fontFamily: 'Poppins-Regular' }}>
                     {comment.content}

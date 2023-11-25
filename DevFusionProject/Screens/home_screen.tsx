@@ -4,6 +4,7 @@ import Card from './components/Card';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import axios from 'axios';
 import SessionStorage from 'react-native-session-storage';
+import Voting from './components/Voting';
 
 interface LoginProps {
   navigation: any;
@@ -11,20 +12,15 @@ interface LoginProps {
 }
 function Home({navigation,route}:LoginProps) {
   const [pos, setpos] = useState([]);
-  const [refreshing, setRefreshing] = useState(false)
+  const [refreshing, setRefreshing] = useState(false);
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      setRefreshing(!refreshing);
+    });
 
-  useEffect(()=>{
-        let refe = refreshing
-        let newRefres = !refe
-        navigation.addListener('focus',()=>{
-            setRefreshing(newRefres)
-            
-            // if (userId != null && token != null) {
-            // }
-
-        })
-    },[])
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -41,11 +37,51 @@ function Home({navigation,route}:LoginProps) {
         console.error('Error fetching posts:', error);
       }
     };
-
-    navigation.addListener('focus',()=>{
-                fetchPosts();
-            })
-  }, [navigation,route,]);
+    fetchPosts();
+  }, [refreshing]);
+  
+  const handleUpvotePress = (id: number,upvotes: number) => async () => {
+    setRefreshing(!refreshing);
+    try {
+      const token = await SessionStorage.getItem('token');
+      const response = await axios.patch(
+        `https://4742-2401-4900-8094-22d1-4b1-d9b3-bed5-ddc4.ngrok-free.app/api/v1/post/${id}`,
+        {
+          upvotes : upvotes+1
+        },
+        {
+          headers: {
+            Authorization: `token ${token}`,
+          },
+        }
+      );
+      console.log('Upvote successful:', response.data);
+      navigation.navigate('HomeTab');
+    } catch (error) {
+      console.error('Error upvoting post:', error);
+    }
+  };
+  const handleDownvotePress = (id: number,downvotes: number) => async () => {
+    setRefreshing(!refreshing);
+    try {
+      const token = await SessionStorage.getItem('token');
+      const response = await axios.patch(
+        `https://4742-2401-4900-8094-22d1-4b1-d9b3-bed5-ddc4.ngrok-free.app/api/v1/post/${id}`,
+        {
+          downvotes : downvotes+1
+        },
+        {
+          headers: {
+            Authorization: `token ${token}`,
+          },
+        }
+      );
+      console.log('Upvote successful:', response.data);
+      navigation.navigate('HomeTab');
+    } catch (error) {
+      console.error('Error upvoting post:', error);
+    }
+  };
 
   return (
     <ImageBackground style={{"backgroundColor":"#ffffff01"}} source={require('../static/images/backgroundopacity.png')}>
@@ -62,10 +98,11 @@ function Home({navigation,route}:LoginProps) {
             imageUrl={card.image}
             postedBy={card.postedBy}
             locationUrl={card.locURL}
-            upvotes={card.upvotes}
-            downvotes={card.downvotes}
           />
           </TouchableOpacity>
+          <View style={{backgroundColor:"#fff",width:"84%",marginTop:-20,borderBottomLeftRadius:10,borderBottomRightRadius:10}}>
+            <Voting onUpvotePress={handleUpvotePress(card.id,card.upvotes)} upvoteCount={card.upvotes} onDownvotePress={handleDownvotePress(card.id,card.downvotes)} downvoteCount={card.downvotes}/>
+          </View>
         </View>
       ))}
     </ScrollView>
@@ -82,7 +119,9 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   cardContainer: {
-    marginBottom: 5,
+    marginBottom: 20,
+    flexDirection:'column',
+    alignItems:'center',
   },
 });
 

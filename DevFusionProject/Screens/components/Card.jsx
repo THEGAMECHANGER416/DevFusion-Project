@@ -16,24 +16,6 @@ const Card = ({ title, description, imageUrl, postedBy, locationUrl,upvotes,down
         <Text style={[styles.text, { color: '#3550ca', fontFamily: 'Poppins-Medium' }]}>Location</Text>
       </TouchableOpacity>
       <Image source={{ uri: imageUrl }} style={styles.image} />
-      <View style={{ padding: 6 }}></View>
-      <View style={styles.votes}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <TouchableOpacity onPress={onUpvote}>
-            <Image style={{ height: 25, width: 25, marginRight: 5 }} source={require('../../static/images/thumb_up.jpg')} /> 
-          </TouchableOpacity>
-          <Text style={[styles.text, { fontSize: 20 }]}>{upvotes}</Text>
-        </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <TouchableOpacity onPress={onDownvote}>
-             <Image style={{ height: 25, width: 25, marginRight: 5 }} source={require('../../static/images/thumb_down.jpg')} /> 
-          </TouchableOpacity>
-          <Text style={[styles.text, { fontSize: 20 }]}>{downvotes}</Text>
-        </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: '60%' }}>
-          <MaterialIcons name="comment" size={25} color="#333" />
-        </View>
-      </View>
     </View>
   );
 };
@@ -44,7 +26,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 0,
     borderColor: '#ccc',
-    margin: 10,
+    marginHorizontal:10,
+    borderBottomLeftRadius:0,
+    borderBottomRightRadius:0,
     padding: 15,
   },
   title: {
